@@ -4,9 +4,9 @@ import com.pppi.novaposhta.dto.AddressRequest;
 import com.pppi.novaposhta.dto.UserRequest;
 import com.epam.cargo.entity.*;
 import com.epam.cargo.exception.*;
+import com.pppi.novaposhta.exception.*;
 import com.pppi.novaposhta.repos.UserRepo;
 import com.pppi.novaposhta.entity.*;
-import com.pppi.novaposhta.exception.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,9 +43,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private DeliveryApplicationService applicationService;
-
-    @Autowired
-    private DeliveryReceiptService receiptService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -180,22 +177,7 @@ public class UserService implements UserDetailsService {
         return user.getApplications();
     }
 
-    public List<DeliveryReceipt> getReceipt(User user){
-        if(!Hibernate.isInitialized(user.getReceipts())){
-            user.setReceipts(receiptService.findAllByUserId(user.getId()));
-        }
-        return user.getReceipts();
-    }
-
     public Page<DeliveryApplication> getApplications(User user, Pageable pageable) {
         return applicationService.findAllByUserId(user.getId(), pageable);
-    }
-
-    public void saveUser(User user) {
-        userRepo.save(user);
-    }
-
-    public boolean credentialsEquals(User customer, User initiator) {
-        return ServiceUtils.credentialsEquals(customer, initiator);
     }
 }

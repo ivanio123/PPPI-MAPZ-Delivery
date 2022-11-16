@@ -3,20 +3,14 @@ package com.pppi.novaposhta.service;
 import com.pppi.novaposhta.dto.AddressRequest;
 import com.pppi.novaposhta.dto.DeliveredBaggageRequest;
 import com.pppi.novaposhta.dto.DeliveryApplicationRequest;
-import com.pppi.novaposhta.dto.DeliveryReceiptRequest;
 import com.epam.cargo.entity.*;
 import com.pppi.novaposhta.exception.InvalidReceivingDateException;
 import com.pppi.novaposhta.exception.NoExistingCityException;
 import com.pppi.novaposhta.exception.WrongDataException;
 import com.pppi.novaposhta.entity.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 public class ServiceUtils {
 
@@ -105,65 +99,5 @@ public class ServiceUtils {
         if (Objects.isNull(userService.findUserByLogin(user.getLogin()))){
             throw new IllegalArgumentException("User " + user + " must be present in database");
         }
-    }
-
-    static <T> Page<T> toPage(List<T> list, Pageable pageable, ComparatorRecognizer<T> recognizer) {
-        if(pageable.getPageNumber()*pageable.getPageSize() > list.size()){
-            pageable = pageable.withPage(0);
-        }
-        Sort sort = pageable.getSort();
-        sortList(list, sort, recognizer);
-
-        int start = (int)pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), list.size());
-        if (start > end){
-            return new PageImpl<>(Collections.emptyList(), pageable, list.size());
-        }
-        return new PageImpl<>(list.subList(start, end), pageable, list.size());
-    }
-
-    static <T> void sortList(List<T> list, Sort sort, ComparatorRecognizer<T> recognizer) {
-
-        List<Sort.Order> orders = sort.get().collect(Collectors.toList());
-
-        Comparator<T> comparator = null;
-
-        for (Sort.Order order:orders) {
-            if (Objects.isNull(comparator)){
-                comparator = recognizer.getComparator(order);
-            }
-            else{
-                comparator = comparator.thenComparing(recognizer.getComparator(order));
-            }
-        }
-
-        if (!Objects.isNull(comparator)) {
-            list.sort(comparator);
-        }
-    }
-
-    public static DeliveryReceipt createDeliveryReceipt(DeliveryApplication application, User manager, DeliveryReceiptRequest receiptRequest) {
-        DeliveryReceipt receipt = new DeliveryReceipt();
-        receipt.setApplication(application);
-        receipt.setCustomer(application.getCustomer());
-        receipt.setManager(manager);
-        receipt.setTotalPrice(Optional.ofNullable(receiptRequest.getPrice()).orElse(application.getPrice()));
-        receipt.setFormationDate(LocalDate.now());
-        receipt.setPaid(false);
-        return receipt;
-    }
-
-    /**
-     * Checks authorized rights for personal actions
-     * @param user specified user for comparison
-     * @param initiator user from context who initiated the action
-     * @return equals of login and password
-     * */
-    static boolean credentialsEquals(User user, User initiator) {
-        return Objects.equals(user.getLogin(), initiator.getLogin()) && Objects.equals(user.getPassword(), initiator.getPassword());
-    }
-
-    public interface ComparatorRecognizer<T> {
-        Comparator<T> getComparator(Sort.Order order);
     }
 }

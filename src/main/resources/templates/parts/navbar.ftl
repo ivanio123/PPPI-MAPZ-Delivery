@@ -21,11 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${refCreateApp}"><@spring.message "menu.create-application"/></a>
                 </li>
-                <#if isManager?? && isManager>
-                <li class="nav-item">
-                    <a class="nav-link" href="${refApplicationsReview}"><@spring.message "menu.delivery-applications-review"/></a>
-                </li>
-                </#if>
                 <li class="nav-item">
                     <a class="nav-link" href="${refProfile}"><@spring.message "menu.profile"/></a>
                 </li>

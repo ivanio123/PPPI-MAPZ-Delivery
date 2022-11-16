@@ -87,7 +87,7 @@
                             <input class="form-control mt-2" type="text" name="surname" id="surnameInput" value="${surname!""}" placeholder="<@spring.message "lang.surname"/>">
                         </div>
                         <div class="col-4">
-                            <input class="form-control mt-2" type="email" name="email" id="emailInput" value="${email!""}" placeholder="<@spring.message "auth.email.placeholder"/>">
+                            <input class="form-control mt-2" type="email" name="email" id="emailInput" value="${email!""}" placeholder="<@spring.message "lang.email"/>">
                             <input class="form-control mt-2" type="text" maxlength="13" name="phone" value="${phone!""}" id="phoneInput" placeholder="<@spring.message "lang.phone"/>">
                         </div>
                     </div>
