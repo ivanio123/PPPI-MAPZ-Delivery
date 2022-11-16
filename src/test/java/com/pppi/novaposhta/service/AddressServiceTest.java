@@ -47,7 +47,7 @@ class AddressServiceTest {
         String InvalidZipcode = "invalidZipCode";
         String street = "Kelezka";
 
-
+//setting data
         address.setCity(cityService.findCityByZipCode(InvalidZipcode));
         address.setStreet(street);
         address.setHouseNumber("98");
