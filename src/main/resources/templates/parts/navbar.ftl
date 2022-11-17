@@ -21,13 +21,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${refCreateApp}"><@spring.message "menu.create-application"/></a>
                 </li>
+                <#if isManager?? && isManager>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${refApplicationsReview}"><@spring.message "menu.delivery-applications-review"/></a>
+                    </li>
+                </#if>
                 <li class="nav-item">
                     <a class="nav-link" href="${refProfile}"><@spring.message "menu.profile"/></a>
                 </li>
             </ul>
             <div class="dropdown navbar-nav me-2" id="switchLanguageDropdown">
                 <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="selectLanguageDropdown">
-                   <img src="/static/images/i18n/language_icon.png" width="24" height="24" class="d-inline-block align-text-top">
+                    <img src="/static/images/i18n/language_icon.png" width="24" height="24" class="d-inline-block align-text-top">
                     <@spring.message "menu.language"/>
                 </a>
                 <ul class="dropdown-menu me-auto" aria-labelledby="selectLanguageDropdown">
