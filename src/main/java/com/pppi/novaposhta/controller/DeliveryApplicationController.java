@@ -2,6 +2,7 @@ package com.pppi.novaposhta.controller;
 
 import com.pppi.novaposhta.dto.DeliveryApplicationRequest;
 import com.pppi.novaposhta.entity.BaggageType;
+import com.pppi.novaposhta.entity.DeliveryApplication;
 import com.pppi.novaposhta.entity.User;
 import com.pppi.novaposhta.exception.WrongDataException;
 import com.pppi.novaposhta.service.CityService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,7 +26,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 @Controller
-@RequestMapping("/make_app")
 public class DeliveryApplicationController {
 
     @Autowired
@@ -36,7 +37,7 @@ public class DeliveryApplicationController {
     @Value("${spring.messages.basename}")
     private String messages;
 
-    @GetMapping
+    @GetMapping("/make_app")
     public String makeApplicationPage(
             @AuthenticationPrincipal User customer,
             DeliveryApplicationRequest applicationRequest,
@@ -58,7 +59,7 @@ public class DeliveryApplicationController {
         return "makeDeliveryApplication";
     }
 
-    @PostMapping
+    @PostMapping("/make_app")
     public String sendApplication(
             @AuthenticationPrincipal User customer,
             @Valid  DeliveryApplicationRequest applicationRequest,
@@ -88,6 +89,19 @@ public class DeliveryApplicationController {
             model.asMap().forEach(redirectAttributes::addFlashAttribute);
             return "redirect:/make_app";
         }
-        return "redirect:/";
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/application/{application}")
+    public String applicationPage(
+            @PathVariable DeliveryApplication application,
+            @AuthenticationPrincipal User customer,
+            Model model
+
+    ){
+
+        model.addAttribute("application", application);
+        model.addAttribute("user", customer);
+        return "application";
     }
 }

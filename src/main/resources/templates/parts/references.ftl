@@ -8,4 +8,5 @@ refLogin = "/login"
 refRegister = "/registration"
 refForgotPassword = "/reset_password"
 refDeliveryCostCalculator = "/delivery_cost_calculator"
+refApplication = "/application"
 >
