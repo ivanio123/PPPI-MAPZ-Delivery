@@ -13,30 +13,50 @@
     applicationsPill = "pills-applications-tab"
     >
 
+    <#if user??>
+        <#if user.address??>
+            <#assign
+            address = user.address
+            street = address.street!""
+            houseNumber = address.houseNumber!""
+            >
+            <#if user.address.city??>
+                <#if user.address.city.name??>
+                    <#assign
+                    cityName = user.address.city.name
+                    >
+                </#if>
+            </#if>
+        </#if>
+    </#if>
+
     <script src="/static/js/localization.js"></script>
 
     <div class="row">
         <div class="col-3">
-            <h1 class="d-flex justify-content-center mb-4">Profile</h1>
+            <h1 class="d-flex justify-content-center mb-4"><@spring.message "lang.profile"/></h1>
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    Login: ${user.login}
+                    <@spring.message "lang.login"/>: ${user.login}
                 </li>
                 <li class="list-group-item">
-                    Name: ${user.name!"-"}
+                    <@spring.message "lang.name"/>: ${user.name!"-"}
                 </li>
                 <li class="list-group-item">
-                    Surname: ${user.surname!"-"}
+                    <@spring.message "lang.surname"/>: ${user.surname!"-"}
                 </li>
                 <li class="list-group-item">
-                    Phone: ${user.phone!"-"}
+                    <@spring.message "lang.phone"/>: ${user.phone!"-"}
                 </li>
                 <li class="list-group-item">
-                    Email: ${user.email!"-"}
+                    <@spring.message "lang.email"/>: ${user.email!"-"}
                 </li>
                 <li class="list-group-item">
-                    Balance: ${user.cache!"0.0"} UAH
+                    <@spring.message "lang.address"/>: <#if cityName??><@spring.message "city.${cityName}"/></#if>, <@spring.message "address.street"/> ${street!""}, <@spring.message "address.house"/> ${houseNumber!""}
+                </li>
+                <li class="list-group-item">
+                    <@spring.message "lang.balance"/>: ${user.cash!"0.0"} <@spring.message "lang.UAH"/>
                 </li>
             </ul>
         </div>
@@ -48,13 +68,13 @@
                 <div class="row">
                     <ul class="nav nav-pills justify-content-center mt-2 mb-4" id="profileMenuItems">
                         <li class="nav-item">
-                            <button class="nav-link <#if activePill == notificationsPill>active</#if>" id="pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab" aria-controls="pills-notifications" aria-selected="<#if activePill == notificationsPill>true<#else>false</#if>" >Notifications</button>
+                            <button class="nav-link <#if activePill == notificationsPill>active</#if>" id="pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab" aria-controls="pills-notifications" aria-selected="<#if activePill == notificationsPill>true<#else>false</#if>" ><@spring.message "profile-menu-pills.notifications"/></button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link <#if activePill == applicationsPill>active</#if>" id="pills-applications-tab" data-bs-toggle="pill" data-bs-target="#pills-applications" type="button" role="tab" aria-controls="pills-applications" aria-selected="<#if activePill == applicationsPill>true<#else>false</#if>">Applications</button>
+                            <button class="nav-link <#if activePill == applicationsPill>active</#if>" id="pills-applications-tab" data-bs-toggle="pill" data-bs-target="#pills-applications" type="button" role="tab" aria-controls="pills-applications" aria-selected="<#if activePill == applicationsPill>true<#else>false</#if>"><@spring.message "profile-menu-pills.applications"/></button>
                         </li>
                         <li class="nav-item">
-                            <button class="nav-link" id="pills-receipts-tab">Receipts</button>
+                            <button class="nav-link" id="pills-receipts-tab"><@spring.message "profile-menu-pills.receipts"/></button>
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-tab-content">
@@ -65,24 +85,24 @@
                             <#list applications.content as application>
                                 <#if application.deliveredBaggage??>
                                     <#assign
-                                        baggage = application.deliveredBaggage
+                                    baggage = application.deliveredBaggage
                                     >
                                 </#if>
                                 <div class="row alert alert-primary mb-2">
                                     <div class="col-1">
-                                        #${application.id}
+                                        <a class="link" href="${refApplication}/${application.id}">#${application.id}</a>
                                     </div>
                                     <div class="col">
-                                        ${application.senderAddress.city.name} - ${application.receiverAddress.city.name}
+                                        <@spring.message "city.${application.senderAddress.city.name}"/> - <@spring.message "city.${application.receiverAddress.city.name}"/>
                                     </div>
                                     <div class="col-auto">
                                         ${application.sendingDate} - ${application.sendingDate}
                                     </div>
                                     <div class="col-2">
-                                        ${application.price} UAH
+                                        ${application.price} <@spring.message "lang.UAH"/>
                                     </div>
                                     <div class="col-2">
-                                        ${application.state}
+                                        <@spring.message "delivery-application.state.${application.state}"/>
                                     </div>
                                 </div>
 
