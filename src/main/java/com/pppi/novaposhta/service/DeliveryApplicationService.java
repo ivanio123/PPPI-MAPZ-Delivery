@@ -1,6 +1,7 @@
 package com.pppi.novaposhta.service;
 
 import com.pppi.novaposhta.dto.DeliveryApplicationRequest;
+import com.pppi.novaposhta.dto.DeliveryApplicationsReviewFilterRequest;
 import com.pppi.novaposhta.entity.DeliveredBaggage;
 import com.pppi.novaposhta.entity.DeliveryApplication;
 import com.pppi.novaposhta.entity.User;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class DeliveryApplicationService {
@@ -75,10 +78,52 @@ public class DeliveryApplicationService {
     }
 
     public Page<DeliveryApplication> findAllByUserId(Long id, Pageable pageable) {
-        return deliveryApplicationRepo.findAll(pageable);
+        return deliveryApplicationRepo.findAllByUserId(id, pageable);
     }
 
     public List<DeliveryApplication> findAllByUserId(Long id) {
         return deliveryApplicationRepo.findAllByUserId(id);
+    }
+
+    public List<DeliveryApplication> findAll(DeliveryApplicationsReviewFilterRequest filter){
+        List<DeliveryApplication> applications = findAll();
+        applications = applications.stream()
+                .filter(
+                        statePredicate(filter)
+                                .and(baggageTypePredicate(filter))
+                                .and(senderCityPredicate(filter))
+                                .and(senderCityPredicate(filter))
+                                .and(receiverCityPredicate(filter))
+                                .and(sendingDatePredicate(filter))
+                                .and(receivingDatePredicate(filter))
+                )
+                .collect(Collectors.toList());
+
+        return applications;
+    }
+
+    private Predicate<? super DeliveryApplication> receivingDatePredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getReceivingDate()) || a.getReceivingDate().equals(filter.getReceivingDate());
+    }
+
+    private Predicate<? super DeliveryApplication> sendingDatePredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getSendingDate()) || a.getSendingDate().equals(filter.getSendingDate());
+    }
+
+    private Predicate<? super DeliveryApplication> senderCityPredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getCityFromId()) || a.getSenderAddress().getCity().getId().equals(filter.getCityFromId());
+    }
+
+    private Predicate<? super DeliveryApplication> receiverCityPredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getCityToId()) || a.getReceiverAddress().getCity().getId().equals(filter.getCityToId());
+    }
+
+    private Predicate<DeliveryApplication> baggageTypePredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getBaggageType()) || a.getDeliveredBaggage().getType().equals(filter.getBaggageType());
+    }
+
+
+    private Predicate<DeliveryApplication> statePredicate(DeliveryApplicationsReviewFilterRequest filter) {
+        return a -> Objects.isNull(filter.getApplicationState()) || a.getState().equals(filter.getApplicationState());
     }
 }

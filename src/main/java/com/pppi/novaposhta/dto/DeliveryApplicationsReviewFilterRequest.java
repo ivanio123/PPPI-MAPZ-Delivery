@@ -1,5 +1,6 @@
 package com.pppi.novaposhta.dto;
 
+
 import com.pppi.novaposhta.entity.BaggageType;
 import com.pppi.novaposhta.entity.DeliveryApplication;
 import lombok.Getter;
