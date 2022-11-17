@@ -6,3 +6,19 @@ body{
 .bg-green-ireland {
     background-color: #4CBB17;
 }
+
+.filter-element {
+
+}
+
+.filter-element[filter-name] {
+
+}
+
+.filter-element[filter-name]::before {
+    content: attr(filter-name);
+    display: block;
+    margin: 10px 0;
+    font-size: 0.85em;
+    color: #505;
+}

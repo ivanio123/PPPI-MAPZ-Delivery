@@ -3,14 +3,17 @@ package com.pppi.novaposhta.service;
 import com.pppi.novaposhta.dto.AddressRequest;
 import com.pppi.novaposhta.dto.DeliveredBaggageRequest;
 import com.pppi.novaposhta.dto.DeliveryApplicationRequest;
-import com.epam.cargo.entity.*;
 import com.pppi.novaposhta.exception.InvalidReceivingDateException;
 import com.pppi.novaposhta.exception.NoExistingCityException;
 import com.pppi.novaposhta.exception.WrongDataException;
 import com.pppi.novaposhta.entity.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ServiceUtils {
 
@@ -99,5 +102,43 @@ public class ServiceUtils {
         if (Objects.isNull(userService.findUserByLogin(user.getLogin()))){
             throw new IllegalArgumentException("User " + user + " must be present in database");
         }
+    }
+    static <T> Page<T> toPage(List<T> list, Pageable pageable, ComparatorRecognizer<T> recognizer) {
+        if(pageable.getPageNumber()*pageable.getPageSize() > list.size()){
+            pageable = pageable.withPage(0);
+        }
+        Sort sort = pageable.getSort();
+        sortList(list, sort, recognizer);
+
+        int start = (int)pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), list.size());
+        if (start > end){
+            return new PageImpl<>(Collections.emptyList(), pageable, list.size());
+        }
+        return new PageImpl<>(list.subList(start, end), pageable, list.size());
+    }
+
+    static <T> void sortList(List<T> list, Sort sort, ComparatorRecognizer<T> recognizer) {
+
+        List<Sort.Order> orders = sort.get().collect(Collectors.toList());
+
+        Comparator<T> comparator = null;
+
+        for (Sort.Order order:orders) {
+            if (Objects.isNull(comparator)){
+                comparator = recognizer.getComparator(order);
+            }
+            else{
+                comparator = comparator.thenComparing(recognizer.getComparator(order));
+            }
+        }
+
+        if (!Objects.isNull(comparator)) {
+            list.sort(comparator);
+        }
+    }
+
+    public interface ComparatorRecognizer<T> {
+        Comparator<T> getComparator(Sort.Order order);
     }
 }

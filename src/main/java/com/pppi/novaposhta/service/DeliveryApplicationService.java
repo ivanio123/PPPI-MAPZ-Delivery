@@ -12,11 +12,10 @@ import com.pppi.novaposhta.repos.DeliveryApplicationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -92,7 +91,6 @@ public class DeliveryApplicationService {
                         statePredicate(filter)
                                 .and(baggageTypePredicate(filter))
                                 .and(senderCityPredicate(filter))
-                                .and(senderCityPredicate(filter))
                                 .and(receiverCityPredicate(filter))
                                 .and(sendingDatePredicate(filter))
                                 .and(receivingDatePredicate(filter))
@@ -125,5 +123,29 @@ public class DeliveryApplicationService {
 
     private Predicate<DeliveryApplication> statePredicate(DeliveryApplicationsReviewFilterRequest filter) {
         return a -> Objects.isNull(filter.getApplicationState()) || a.getState().equals(filter.getApplicationState());
+    }
+
+    public Page<DeliveryApplication> getPage(DeliveryApplicationsReviewFilterRequest applicationsRequest, Pageable pageable) {
+        List<DeliveryApplication> list = findAll(applicationsRequest);
+        return ServiceUtils.toPage(list, pageable, new DeliveryApplicationComparatorRecognizer());
+    }
+
+    private static class DeliveryApplicationComparatorRecognizer implements ServiceUtils.ComparatorRecognizer<DeliveryApplication> {
+
+        private final Map<String, Comparator<DeliveryApplication>> comparators;
+
+        DeliveryApplicationComparatorRecognizer(){
+            comparators = new HashMap<>();
+            comparators.put("id", Comparator.comparing(DeliveryApplication::getId, Long::compareTo));
+        }
+
+        @Override
+        public Comparator<DeliveryApplication> getComparator(Sort.Order order) {
+            Comparator<DeliveryApplication> cmp = comparators.get(order.getProperty());
+            if (!Objects.isNull(cmp) && order.isDescending()){
+                cmp = cmp.reversed();
+            }
+            return cmp;
+        }
     }
 }
