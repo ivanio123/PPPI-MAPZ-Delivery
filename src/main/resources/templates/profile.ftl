@@ -96,7 +96,7 @@
                                         <@spring.message "city.${application.senderAddress.city.name}"/> - <@spring.message "city.${application.receiverAddress.city.name}"/>
                                     </div>
                                     <div class="col-auto">
-                                        ${application.sendingDate} - ${application.sendingDate}
+                                        ${application.sendingDate} - ${application.receivingDate}
                                     </div>
                                     <div class="col-2">
                                         ${application.price} <@spring.message "lang.UAH"/>
