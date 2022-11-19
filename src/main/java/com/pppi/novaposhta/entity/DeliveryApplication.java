@@ -47,6 +47,6 @@ public class DeliveryApplication {
     private Double price;
 
     public enum State{
-        SUBMITTED, CONFIRMED, COMPLETED, CANCELED
+        SUBMITTED, CONFIRMED, COMPLETED, CANCELED, REJECTED
     }
 }

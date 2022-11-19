@@ -46,7 +46,7 @@ public class DeliveryApplicationService {
 
         DeliveryApplication application = ServiceUtils.createDeliveryApplication(customer, request, cityService, bundle);
         application.setPrice(calculatePrice(application));
-        return sendApplication(application);
+        return saveApplication(application);
 
     }
 
@@ -58,7 +58,7 @@ public class DeliveryApplicationService {
         return distanceCost + weightCost + dimensionsCost;
     }
 
-    public boolean sendApplication(DeliveryApplication application) throws NoExistingCityException {
+    public boolean saveApplication(DeliveryApplication application) throws NoExistingCityException {
         if (Objects.isNull(application)){
             return false;
         }
@@ -71,6 +71,15 @@ public class DeliveryApplicationService {
 
         return true;
     }
+
+    /**
+     * finds application according to the given id
+     * @param id unique identifier of application in the database
+     * @return found DeliveryApplication object, if no objects are found returns null
+     * */
+   public DeliveryApplication findById(Long id){
+        return deliveryApplicationRepo.findById(id).orElse(null);
+   }
 
     public List<DeliveryApplication> findAll() {
         return deliveryApplicationRepo.findAll();
@@ -128,6 +137,11 @@ public class DeliveryApplicationService {
     public Page<DeliveryApplication> getPage(DeliveryApplicationsReviewFilterRequest applicationsRequest, Pageable pageable) {
         List<DeliveryApplication> list = findAll(applicationsRequest);
         return ServiceUtils.toPage(list, pageable, new DeliveryApplicationComparatorRecognizer());
+    }
+
+    public void rejectApplication(DeliveryApplication application) {
+       application.setState(DeliveryApplication.State.REJECTED);
+       deliveryApplicationRepo.save(application);
     }
 
     private static class DeliveryApplicationComparatorRecognizer implements ServiceUtils.ComparatorRecognizer<DeliveryApplication> {

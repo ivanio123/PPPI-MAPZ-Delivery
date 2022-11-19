@@ -121,7 +121,7 @@ public class DirectionDeliveryService {
         return directions.stream()
                 .filter(
                         getDirectionDeliveryPredicate(filter::getSenderCityName, DirectionDelivery::getSenderCity)
-                                .and(getDirectionDeliveryPredicate(filter::getReceiverCityName, DirectionDelivery::getReceiverCity))
+                        .and(getDirectionDeliveryPredicate(filter::getReceiverCityName, DirectionDelivery::getReceiverCity))
                 ).collect(Collectors.toList());
     }
 

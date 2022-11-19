@@ -4,6 +4,8 @@ import com.pppi.novaposhta.entity.City;
 
 import java.util.ResourceBundle;
 
+import static com.pppi.novaposhta.exception.WrongInputDataKeysConstants.NO_EXISTING_DIRECTION_KEY_ERROR_MESSAGE;
+
 public class NoExistingDirectionException extends WrongDataException{
 
     public NoExistingDirectionException(City from, City to, ResourceBundle bundle) {
@@ -11,7 +13,7 @@ public class NoExistingDirectionException extends WrongDataException{
     }
 
     private static String buildErrorMessage(City from, City to, ResourceBundle bundle){
-        return String.format(bundle.getString(WrongInputDataKeysConstants.NO_EXISTING_DIRECTION_KEY_ERROR_MESSAGE), from.getName(), to.getName());
+        return String.format(bundle.getString(NO_EXISTING_DIRECTION_KEY_ERROR_MESSAGE), from.getName(), to.getName());
     }
 
     @Override

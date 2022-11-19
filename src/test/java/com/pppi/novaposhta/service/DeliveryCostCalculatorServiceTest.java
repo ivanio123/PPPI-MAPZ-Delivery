@@ -26,8 +26,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.pppi.novaposhta.service.CityZipcodesConstants.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DeliveryCostCalculatorServiceTest {
@@ -62,12 +60,12 @@ public class DeliveryCostCalculatorServiceTest {
         return Stream.of(
                 Arguments.of(
                         DeliveryCostCalculatorRequest.of(3L, 1L, DimensionsRequest.of(30.0, 20.0, 4.0), 3.0),
-                        DeliveryCostCalculatorResponse.of(new City.Distance(getCity(UMAN_ZIPCODE), getCity(VINNYTISA_ZIPCODE), 160.1, getCitiesByZipcodes(UMAN_ZIPCODE, VINNYTISA_ZIPCODE)), 120.0
+                        DeliveryCostCalculatorResponse.of(new City.Distance(getCity(CityZipcodesConstants.UMAN_ZIPCODE), getCity(CityZipcodesConstants.VINNYTISA_ZIPCODE), 160.1, getCitiesByZipcodes(CityZipcodesConstants.UMAN_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE)), 120.0
                         )
                 ),
                 Arguments.of(
                         DeliveryCostCalculatorRequest.of(2L, 3L, DimensionsRequest.of(100.0, 40.0, 30.0), 50.0),
-                        DeliveryCostCalculatorResponse.of(new City.Distance(getCity(KYIV_ZIPCODE), getCity(UMAN_ZIPCODE), 375.9, getCitiesByZipcodes(KYIV_ZIPCODE, CHERKASY_ZIPCODE, UMAN_ZIPCODE)), 330.0)
+                        DeliveryCostCalculatorResponse.of(new City.Distance(getCity(CityZipcodesConstants.KYIV_ZIPCODE), getCity(CityZipcodesConstants.UMAN_ZIPCODE), 375.9, getCitiesByZipcodes(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE)), 330.0)
                 )
         );
     }

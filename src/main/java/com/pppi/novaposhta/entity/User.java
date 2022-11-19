@@ -64,6 +64,11 @@ public class User implements UserDetails {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<DeliveryApplication> applications;
 
+
+    @OneToMany(mappedBy="customer", fetch=FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<DeliveryReceipt> receipts;
+
     public User() { }
 
     public User(String name, String login, String password) {

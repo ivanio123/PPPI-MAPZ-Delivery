@@ -1,6 +1,5 @@
 package com.pppi.novaposhta.controller;
 
-import com.pppi.novaposhta.exception.WrongInputDataKeysConstants;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -11,6 +10,8 @@ import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import static com.pppi.novaposhta.exception.WrongInputDataKeysConstants.*;
 
 public class ControllerUtils {
 
@@ -41,9 +42,9 @@ public class ControllerUtils {
             String rejected = (String)fieldError.getRejectedValue();
 
             if (isAnyFractionRecord(rejected) && rejected.contains(",")){
-                return WrongInputDataKeysConstants.USE_DOT_INSTEAD_OF_COMMA_KEY_ERROR_MESSAGE;
+                return USE_DOT_INSTEAD_OF_COMMA_KEY_ERROR_MESSAGE;
             }
-            return WrongInputDataKeysConstants.INCORRECT_NUMBER_FORMAT_KEY_ERROR_MESSAGE;
+            return INCORRECT_NUMBER_FORMAT_KEY_ERROR_MESSAGE;
         };
     }
 
@@ -70,7 +71,7 @@ public class ControllerUtils {
     }
 
     private static String getErrorMessageKey(FieldError fieldError) {
-        Function<FieldError, String> action = actionsByCode.getOrDefault(fieldError.getCode(), fieldErr -> WrongInputDataKeysConstants.UNKNOWN_ERROR_KEY_MESSAGE);
+        Function<FieldError, String> action = actionsByCode.getOrDefault(fieldError.getCode(), fieldErr -> UNKNOWN_ERROR_KEY_MESSAGE);
         return action.apply(fieldError);
     }
 
