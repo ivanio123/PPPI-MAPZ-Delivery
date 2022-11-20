@@ -108,7 +108,7 @@
                                 </div>
 
                             </#list>
-                            <@p.pager url applications 'submitButton'/>
+                            <@p.qualifiedPager url applications 'applications' 'submitButton'/>
                         </div>
                         <div class="tab-pane fade <#if activePill == receiptsPill>active show</#if>" id="pills-receipts" role="tabpanel" aria-labelledby="pills-receipts-tab">
                             <div class="row alert alert-dark mb-2">
@@ -129,7 +129,7 @@
                                     <@spring.message "lang.price"/>
                                 </div>
                             </div>
-                            <#list receipts as receipt>
+                            <#list receipts.content as receipt>
                             <div class="row alert alert-primary mb-2">
                                 <div class="col-1 d-flex align-self-center">
                                     <a class="link" href="/receipt/${receipt.id}">#${receipt.id!""}</a>
@@ -156,6 +156,7 @@
                             </div>
 
                             </#list>
+                            <@p.qualifiedPager url receipts 'receipts' 'submitButton'/>
                         </div>
                     </div>
                 </div>

@@ -22,3 +22,20 @@ body{
     font-size: 0.85em;
     color: #505;
 }
+
+
+.pseudo-element {
+
+}
+
+.pseudo-element[pseudo-content] {
+
+}
+
+.pseudo-element[pseudo-content]::before {
+    content: attr(pseudo-content);
+    display: block;
+    margin: 10px 0;
+    font-size: 0.85em;
+    color: #000;
+}

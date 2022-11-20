@@ -6,6 +6,7 @@ import com.pppi.novaposhta.entity.User;
 import com.pppi.novaposhta.service.DeliveryApplicationService;
 import com.pppi.novaposhta.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -35,14 +35,17 @@ public class ProfileController {
     @GetMapping
     public String authorizedUserProfilePage(
             @AuthenticationPrincipal User user,
-            @PageableDefault(size = 7, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestParam(name = "activePill", required = false) String activePill,
+            @Qualifier("applications")
+            @PageableDefault(size = 7, sort = {"id"}, direction = Sort.Direction.DESC) Pageable applicationsPageable,
+            @Qualifier("receipts")
+            @PageableDefault(size = 5, sort = {"id"}, direction = Sort.Direction.DESC) Pageable receiptsPageable,
+            @RequestParam(name = "activePill", defaultValue = "pills-applications-tab", required = false) String activePill,
             Model model,
             Locale locale
     ){
 
-        Page<DeliveryApplication> applications = userService.getApplications(user, pageable);
-        List<DeliveryReceipt> receipts = userService.getReceipt(user);
+        Page<DeliveryApplication> applications = userService.getApplications(user, applicationsPageable);
+        Page<DeliveryReceipt> receipts = userService.getCustomerReceipts(user, receiptsPageable);
         model.addAttribute("receipts", receipts);
         model.addAttribute("applications", applications);
         model.addAttribute("user", user);
@@ -58,13 +61,18 @@ public class ProfileController {
     @GetMapping("{customer}")
     public String profilePage(
             @PathVariable User customer,
-            @PageableDefault(size = 7, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
-            @RequestParam(name = "activePill", required = false) String activePill,
+            @Qualifier("applications")
+            @PageableDefault(size = 7, sort = {"id"}, direction = Sort.Direction.DESC) Pageable applicationsPageable,
+            @Qualifier("receipts")
+            @PageableDefault(size = 5, sort = {"id"}, direction = Sort.Direction.DESC) Pageable receiptsPageable,
+            @RequestParam(name = "activePill", defaultValue = "pills-applications-tab", required = false) String activePill,
             Model model,
             Locale locale
     ){
-        Page<DeliveryApplication> applications = userService.getApplications(customer, pageable);
+        Page<DeliveryApplication> applications = userService.getApplications(customer, applicationsPageable);
+        Page<DeliveryReceipt> receipts = userService.getCustomerReceipts(customer, receiptsPageable);
         model.addAttribute("applications", applications);
+        model.addAttribute("receipts", receipts);
         model.addAttribute("customer", customer);
         model.addAttribute("url", String.format("/profile/%s", customer.getId()));
         model.addAttribute("activePill", activePill);

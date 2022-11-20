@@ -1,5 +1,6 @@
 package com.pppi.novaposhta.dto;
 
+import com.pppi.novaposhta.exception.WrongInputDataKeysConstants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,23 +9,20 @@ import javax.validation.constraints.Positive;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.pppi.novaposhta.exception.WrongInputDataKeysConstants.NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE;
-import static com.pppi.novaposhta.exception.WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE;
-
 @Getter
 @Setter
 public class DimensionsRequest {
 
-    @NotNull(message = REQUIRED_KEY_ERROR_MESSAGE)
-    @Positive(message = NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
+    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @Positive(message = WrongInputDataKeysConstants.NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
     private Double length;
 
-    @NotNull(message = REQUIRED_KEY_ERROR_MESSAGE)
-    @Positive(message = NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
+    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @Positive(message = WrongInputDataKeysConstants.NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
     private Double width;
 
-    @NotNull(message = REQUIRED_KEY_ERROR_MESSAGE)
-    @Positive(message = NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
+    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @Positive(message = WrongInputDataKeysConstants.NO_POSITIVE_NUMBER_KEY_ERROR_MESSAGE)
     private Double height;
 
     /**

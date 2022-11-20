@@ -15,8 +15,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.pppi.novaposhta.service.CityZipcodesConstants.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CityUtilsTest {
@@ -29,68 +27,68 @@ class CityUtilsTest {
 
     private static Stream<Arguments> testDistanceCalculationCases() {
         return Stream.of(
-                Arguments.of(KYIV_ZIPCODE, CHERKASY_ZIPCODE, 192.3),
-                Arguments.of(KYIV_ZIPCODE, UMAN_ZIPCODE, 375.9),
-                Arguments.of(KYIV_ZIPCODE, VINNYTISA_ZIPCODE, 268.6),
-                Arguments.of(KYIV_ZIPCODE, ZHYTOMYR_ZIPCODE, 139.9),
-                Arguments.of(UZHOROD_ZIPCODE, KHARKIV_ZIPCODE, 1355.5),
-                Arguments.of(LUTSK_ZIPCODE, SUMY_ZIPCODE, 855.0),
-                Arguments.of(SUMY_ZIPCODE, LUTSK_ZIPCODE, 855.0),
-                Arguments.of(KHARKIV_ZIPCODE, CHERNIVTSI_ZIPCODE, 1027.7),
-                Arguments.of(ZAPORIZHZHIA_ZIPCODE, UZHOROD_ZIPCODE, 1314.0),
-                Arguments.of(CHERNIVTSI_ZIPCODE, LUTSK_ZIPCODE, 400.5),
-                Arguments.of(POLTAVA_ZIPCODE, RIVNE_ZIPCODE, 753.0),
-                Arguments.of(POLTAVA_ZIPCODE, KHMELNYTSKIY_ZIPCODE, 696.7)
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, 192.3),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE, 375.9),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE, 268.6),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE, 139.9),
+                Arguments.of(CityZipcodesConstants.UZHOROD_ZIPCODE, CityZipcodesConstants.KHARKIV_ZIPCODE, 1355.5),
+                Arguments.of(CityZipcodesConstants.LUTSK_ZIPCODE, CityZipcodesConstants.SUMY_ZIPCODE, 855.0),
+                Arguments.of(CityZipcodesConstants.SUMY_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE, 855.0),
+                Arguments.of(CityZipcodesConstants.KHARKIV_ZIPCODE, CityZipcodesConstants.CHERNIVTSI_ZIPCODE, 1027.7),
+                Arguments.of(CityZipcodesConstants.ZAPORIZHZHIA_ZIPCODE, CityZipcodesConstants.UZHOROD_ZIPCODE, 1314.0),
+                Arguments.of(CityZipcodesConstants.CHERNIVTSI_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE, 400.5),
+                Arguments.of(CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE, 753.0),
+                Arguments.of(CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE, 696.7)
         );
     }
 
     private static Stream<Arguments> testSmallestRouteBuildingCases() {
         return Stream.of(
-                Arguments.of(KYIV_ZIPCODE, CHERKASY_ZIPCODE, Arrays.asList(KYIV_ZIPCODE, CHERKASY_ZIPCODE)),
-                Arguments.of(KYIV_ZIPCODE, UMAN_ZIPCODE,  Arrays.asList(KYIV_ZIPCODE, CHERKASY_ZIPCODE, UMAN_ZIPCODE)),
-                Arguments.of(KYIV_ZIPCODE, VINNYTISA_ZIPCODE, Arrays.asList(KYIV_ZIPCODE, ZHYTOMYR_ZIPCODE, VINNYTISA_ZIPCODE)),
-                Arguments.of(KYIV_ZIPCODE, ZHYTOMYR_ZIPCODE,  Arrays.asList(KYIV_ZIPCODE, ZHYTOMYR_ZIPCODE)),
-                Arguments.of(UZHOROD_ZIPCODE, KHARKIV_ZIPCODE, Arrays.asList(
-                                UZHOROD_ZIPCODE, IVANOFRANKIVSK_ZIPCODE, TERNOPIL_ZIPCODE, KHMELNYTSKIY_ZIPCODE, VINNYTISA_ZIPCODE,
-                                UMAN_ZIPCODE, CHERKASY_ZIPCODE, POLTAVA_ZIPCODE, KHARKIV_ZIPCODE
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, Arrays.asList(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE)),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE,  Arrays.asList(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE)),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE, Arrays.asList(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE)),
+                Arguments.of(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE,  Arrays.asList(CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE)),
+                Arguments.of(CityZipcodesConstants.UZHOROD_ZIPCODE, CityZipcodesConstants.KHARKIV_ZIPCODE, Arrays.asList(
+                                CityZipcodesConstants.UZHOROD_ZIPCODE, CityZipcodesConstants.IVANOFRANKIVSK_ZIPCODE, CityZipcodesConstants.TERNOPIL_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE,
+                                CityZipcodesConstants.UMAN_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.KHARKIV_ZIPCODE
                         )
                 ),
-                Arguments.of(LUTSK_ZIPCODE, SUMY_ZIPCODE, Arrays.asList(
-                                LUTSK_ZIPCODE, RIVNE_ZIPCODE, ZHYTOMYR_ZIPCODE,
-                                KYIV_ZIPCODE, CHERNIHIV_ZIPCODE, SUMY_ZIPCODE
-                        )
-
-                ),
-                Arguments.of(SUMY_ZIPCODE, LUTSK_ZIPCODE, Arrays.asList(
-                                SUMY_ZIPCODE, CHERNIHIV_ZIPCODE, KYIV_ZIPCODE,
-                                ZHYTOMYR_ZIPCODE, RIVNE_ZIPCODE, LUTSK_ZIPCODE
+                Arguments.of(CityZipcodesConstants.LUTSK_ZIPCODE, CityZipcodesConstants.SUMY_ZIPCODE, Arrays.asList(
+                                CityZipcodesConstants.LUTSK_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE,
+                                CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.CHERNIHIV_ZIPCODE, CityZipcodesConstants.SUMY_ZIPCODE
                         )
 
                 ),
-                Arguments.of(KHARKIV_ZIPCODE, CHERNIVTSI_ZIPCODE, Arrays.asList(
-                                KHARKIV_ZIPCODE, POLTAVA_ZIPCODE, CHERKASY_ZIPCODE, UMAN_ZIPCODE,
-                                VINNYTISA_ZIPCODE, KHMELNYTSKIY_ZIPCODE, KAMIANETS_ZIPCODE, CHERNIVTSI_ZIPCODE
+                Arguments.of(CityZipcodesConstants.SUMY_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE, Arrays.asList(
+                                CityZipcodesConstants.SUMY_ZIPCODE, CityZipcodesConstants.CHERNIHIV_ZIPCODE, CityZipcodesConstants.KYIV_ZIPCODE,
+                                CityZipcodesConstants.ZHYTOMYR_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE
                         )
 
                 ),
-                Arguments.of(ZAPORIZHZHIA_ZIPCODE, UZHOROD_ZIPCODE,  Arrays.asList(
-                        ZAPORIZHZHIA_ZIPCODE, DNIPRO_ZIPCODE, KROPYVNYTSKYI_ZIPCODE, UMAN_ZIPCODE,
-                        VINNYTISA_ZIPCODE, KHMELNYTSKIY_ZIPCODE, TERNOPIL_ZIPCODE, IVANOFRANKIVSK_ZIPCODE,
-                        UZHOROD_ZIPCODE
-                        )
-                ),
-                Arguments.of(CHERNIVTSI_ZIPCODE, LUTSK_ZIPCODE,  Arrays.asList(
-                        CHERNIVTSI_ZIPCODE, TERNOPIL_ZIPCODE, RIVNE_ZIPCODE, LUTSK_ZIPCODE
+                Arguments.of(CityZipcodesConstants.KHARKIV_ZIPCODE, CityZipcodesConstants.CHERNIVTSI_ZIPCODE, Arrays.asList(
+                                CityZipcodesConstants.KHARKIV_ZIPCODE, CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE,
+                                CityZipcodesConstants.VINNYTISA_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE, CityZipcodesConstants.KAMIANETS_ZIPCODE, CityZipcodesConstants.CHERNIVTSI_ZIPCODE
                         )
 
                 ),
-                Arguments.of(POLTAVA_ZIPCODE, RIVNE_ZIPCODE,  Arrays.asList(
-                        POLTAVA_ZIPCODE, CHERKASY_ZIPCODE, KYIV_ZIPCODE, ZHYTOMYR_ZIPCODE, RIVNE_ZIPCODE
+                Arguments.of(CityZipcodesConstants.ZAPORIZHZHIA_ZIPCODE, CityZipcodesConstants.UZHOROD_ZIPCODE,  Arrays.asList(
+                        CityZipcodesConstants.ZAPORIZHZHIA_ZIPCODE, CityZipcodesConstants.DNIPRO_ZIPCODE, CityZipcodesConstants.KROPYVNYTSKYI_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE,
+                        CityZipcodesConstants.VINNYTISA_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE, CityZipcodesConstants.TERNOPIL_ZIPCODE, CityZipcodesConstants.IVANOFRANKIVSK_ZIPCODE,
+                        CityZipcodesConstants.UZHOROD_ZIPCODE
+                        )
+                ),
+                Arguments.of(CityZipcodesConstants.CHERNIVTSI_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE,  Arrays.asList(
+                        CityZipcodesConstants.CHERNIVTSI_ZIPCODE, CityZipcodesConstants.TERNOPIL_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE, CityZipcodesConstants.LUTSK_ZIPCODE
                         )
 
                 ),
-                Arguments.of(POLTAVA_ZIPCODE, KHMELNYTSKIY_ZIPCODE, Arrays.asList(
-                        POLTAVA_ZIPCODE, CHERKASY_ZIPCODE, UMAN_ZIPCODE, VINNYTISA_ZIPCODE, KHMELNYTSKIY_ZIPCODE
+                Arguments.of(CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE,  Arrays.asList(
+                        CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.KYIV_ZIPCODE, CityZipcodesConstants.ZHYTOMYR_ZIPCODE, CityZipcodesConstants.RIVNE_ZIPCODE
+                        )
+
+                ),
+                Arguments.of(CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE, Arrays.asList(
+                        CityZipcodesConstants.POLTAVA_ZIPCODE, CityZipcodesConstants.CHERKASY_ZIPCODE, CityZipcodesConstants.UMAN_ZIPCODE, CityZipcodesConstants.VINNYTISA_ZIPCODE, CityZipcodesConstants.KHMELNYTSKIY_ZIPCODE
                         )
 
                 )

@@ -70,9 +70,26 @@
                                     </form>
                                 </div>
                             </div>
-
                         </div>
-                            <#else>
+
+                        <#elseif application.state = "CONFIRMED">
+                        <div class="row mt-4">
+                            <div class="col d-flex justify-content-center">
+                                <div class="col-auto me-4">
+                                    <form action="/application/${application.id}/complete" method="post">
+                                        <input name="_csrf" value="${_csrf.token}" hidden>
+                                        <button class="btn btn-success"><@spring.message "lang.complete"/></button>
+                                    </form>
+                                </div>
+                                <div class="col-auto">
+                                    <form action="/application/${application.id}/reject" method="post">
+                                        <input name="_csrf" value="${_csrf.token}" hidden>
+                                        <button class="btn btn-danger"><@spring.message "lang.reject"/></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <#else>
                             <div class="row mt-4">
                                 <div class="col d-flex justify-content-center">
                                     <a class="btn btn-outline-success" href="/applications/review">OK</a>

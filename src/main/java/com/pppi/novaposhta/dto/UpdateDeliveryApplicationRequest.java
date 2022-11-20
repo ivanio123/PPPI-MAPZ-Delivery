@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DeliveryApplicationRequest {
+public class UpdateDeliveryApplicationRequest {
 
     @Valid
     @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)

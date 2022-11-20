@@ -11,6 +11,8 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -76,7 +78,7 @@ public class DeliveryReceiptService {
         Objects.requireNonNull(receipt.getFormationDate(), "FormationDate cannot be null");
     }
 
-    public List<DeliveryReceipt> findAllByUserId(Long id) {
+    public List<DeliveryReceipt> findAllByCustomerId(Long id) {
         return receiptRepo.findAllByCustomerId(id);
     }
 
@@ -117,5 +119,17 @@ public class DeliveryReceiptService {
 
         userService.saveUser(initiator);
         receiptRepo.save(receipt);
+    }
+
+    public Page<DeliveryReceipt> findAllByCustomerId(Long id, Pageable pageable) {
+        return receiptRepo.findAllByCustomerId(id, pageable);
+    }
+
+    public Optional<DeliveryReceipt> findByApplicationId(Long id) {
+        return receiptRepo.findByApplicationId(id);
+    }
+
+    public void deleteById(Long id) {
+        receiptRepo.deleteById(id);
     }
 }

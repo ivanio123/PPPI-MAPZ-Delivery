@@ -45,3 +45,7 @@ function setPageNumber(pageNumber){
 function setPageSize(pageSize){
     document.getElementById('pageSize').setAttribute('value', pageSize)
 }
+
+function setValueById(id, value){
+    document.getElementById(id).setAttribute('value', value)
+}

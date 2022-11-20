@@ -4,6 +4,7 @@ import com.pppi.novaposhta.dto.DeliveryCostCalculatorRequest;
 import com.pppi.novaposhta.dto.DeliveryCostCalculatorResponse;
 import com.pppi.novaposhta.entity.Address;
 import com.pppi.novaposhta.entity.City;
+import com.pppi.novaposhta.entity.DeliveredBaggage;
 import com.pppi.novaposhta.exception.NoExistingCityException;
 import com.pppi.novaposhta.exception.NoExistingDirectionException;
 import com.pppi.novaposhta.exception.SameCityDirectionException;
@@ -50,13 +51,17 @@ public class DeliveryCostCalculatorService {
 
         City.Distance distance = directionDeliveryService.getDistanceBetweenCities(cityFrom, cityTo, locale);
 
-        double distanceCost = distanceFareService.getPrice(distance.getDistance().intValue());
-        double weightCost = weightFareService.getPrice(calculatorRequest.getWeight().intValue());
-        double dimensionsCost = dimensionsFareService.getPrice(calculatorRequest.getDimensions().getVolume().intValue());
-
-        double totalCost = distanceCost + weightCost + dimensionsCost;
-
+        double totalCost = calculate(distance.getDistance(), calculatorRequest.getWeight(), calculatorRequest.getDimensions().getVolume());
         return new DeliveryCostCalculatorResponse(totalCost, distance);
+    }
+
+    public Double calculateCost(DeliveredBaggage baggage, Address sender, Address receiver) throws NoExistingCityException {
+
+        City from = requireExistingCity(sender.getCity().getId());
+        City to = requireExistingCity(receiver.getCity().getId());
+
+        Double distance = directionDeliveryService.calculateMinDistance(from, to);
+        return calculate(distance, baggage.getWeight(), baggage.getVolume());
     }
 
     public Double calculateWeightCost(Double weight){
@@ -87,7 +92,7 @@ public class DeliveryCostCalculatorService {
         }
         return 0.0;
     }
-
+    
     private void requireDifferentCities(Long cityFromId, Long cityToId, ResourceBundle bundle) throws SameCityDirectionException {
         if (Objects.equals(cityFromId, cityToId)){
             throw new SameCityDirectionException(bundle);
@@ -102,4 +107,17 @@ public class DeliveryCostCalculatorService {
         return city;
     }
 
+    /**
+     * Calculates cost of application by parameters according to fares from db
+     * @param distance distance between cities
+     * @param weight weight of parcel
+     * @param volume volume of parcel
+     * @return total cost of delivery application
+     * */
+    private Double calculate(Double distance, Double weight, Double volume){
+        double distanceCost = distanceFareService.getPrice(distance.intValue());
+        double weightCost = weightFareService.getPrice(weight.intValue());
+        double dimensionsCost = dimensionsFareService.getPrice(volume.intValue());
+        return distanceCost + weightCost + dimensionsCost;
+    }
 }
