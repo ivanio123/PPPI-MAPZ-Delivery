@@ -32,6 +32,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Takes requests associated with page of handling delivery application.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 public class DeliveryApplicationController {
 
@@ -81,13 +86,11 @@ public class DeliveryApplicationController {
         boolean successfullySent = false;
         if (!bindingResult.hasErrors()){
             try {
-                ResourceBundle bundle = ResourceBundle.getBundle(messages, locale);
-                successfullySent = applicationService.sendApplication(customer, applicationRequest, bundle);
+                successfullySent = applicationService.sendApplication(customer, applicationRequest);
                 model.addAttribute("result", "application was successfully sent");
             }
             catch (WrongDataException e){
                 model.addAttribute(e.getModelAttribute(), e.getMessage());
-
             }
         }
         else{
@@ -126,8 +129,8 @@ public class DeliveryApplicationController {
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/application/{application}/complete")
     public String completeApplication(
-        @PathVariable DeliveryApplication application,
-        Model model
+            @PathVariable DeliveryApplication application,
+            Model model
     ){
         applicationService.completeApplication(application);
         return String.format("redirect:/application/%s", application.getId().toString());
@@ -159,12 +162,12 @@ public class DeliveryApplicationController {
 
     @PostMapping("/application/{application}/update")
     public String updateApplication(
-        @PathVariable DeliveryApplication application,
-        @AuthenticationPrincipal User initiator,
-        @Valid UpdateDeliveryApplicationRequest updated,
-        BindingResult result,
-        Model model
-     ){
+            @PathVariable DeliveryApplication application,
+            @AuthenticationPrincipal User initiator,
+            @Valid UpdateDeliveryApplicationRequest updated,
+            BindingResult result,
+            Model model
+    ){
         if (!result.hasErrors()){
             if (!initiator.isManager() && !userService.credentialsEquals(application.getCustomer(), initiator)){
                 return "redirect:/forbidden";
@@ -183,5 +186,4 @@ public class DeliveryApplicationController {
         }
         return String.format("redirect:/application/%s", application.getId().toString());
     }
-
 }

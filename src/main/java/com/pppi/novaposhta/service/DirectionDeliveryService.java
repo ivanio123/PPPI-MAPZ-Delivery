@@ -1,5 +1,6 @@
 package com.pppi.novaposhta.service;
 
+import com.pppi.novaposhta.entity.Address;
 import com.pppi.novaposhta.dto.DirectionDeliveryFilterRequest;
 import com.pppi.novaposhta.entity.City;
 import com.pppi.novaposhta.entity.DirectionDelivery;
@@ -23,6 +24,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing DirectionDelivery objects.<br>
+ * @author group2
+ * @see DirectionDelivery
+ * @version 1.0
+ * */
 @Service
 public class DirectionDeliveryService {
 
@@ -121,7 +128,7 @@ public class DirectionDeliveryService {
         return directions.stream()
                 .filter(
                         getDirectionDeliveryPredicate(filter::getSenderCityName, DirectionDelivery::getSenderCity)
-                        .and(getDirectionDeliveryPredicate(filter::getReceiverCityName, DirectionDelivery::getReceiverCity))
+                                .and(getDirectionDeliveryPredicate(filter::getReceiverCityName, DirectionDelivery::getReceiverCity))
                 ).collect(Collectors.toList());
     }
 

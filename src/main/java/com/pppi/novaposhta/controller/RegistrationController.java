@@ -22,6 +22,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Takes requests associated with registration user page.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {

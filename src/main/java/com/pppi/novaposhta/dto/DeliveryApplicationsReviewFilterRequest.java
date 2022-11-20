@@ -8,6 +8,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object to assemble filter for DeliveryApplication objects on delivery applications review page.<br>
+ * @author group2
+ * @version 1.0
+ * */
 @Getter
 @Setter
 public class DeliveryApplicationsReviewFilterRequest {

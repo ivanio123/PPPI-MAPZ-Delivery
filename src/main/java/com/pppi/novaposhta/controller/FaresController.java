@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+/**
+ * Takes requests associated with delivery fares page.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 @RequestMapping("/fares")
 public class FaresController {

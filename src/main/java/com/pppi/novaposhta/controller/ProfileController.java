@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Locale;
 
+/**
+ * Takes requests associated with page of handling user profile.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {

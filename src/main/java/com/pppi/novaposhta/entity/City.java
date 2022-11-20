@@ -9,6 +9,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents city.
+ * Used in addresses and delivery distances.
+ * Implements Cloneable interface.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @Table(name="cities")
 @Getter

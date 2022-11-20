@@ -6,6 +6,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Represents delivered baggage.
+ * Used as a part of delivery application.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @Table(name = "delivered_baggage")
 @Getter

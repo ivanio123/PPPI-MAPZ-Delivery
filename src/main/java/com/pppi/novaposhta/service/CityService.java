@@ -12,6 +12,12 @@ import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing City objects.<br>
+ * @author Roman Kovalchuk
+ * @see City
+ * @version 1.0
+ * */
 @Service
 public class CityService {
 

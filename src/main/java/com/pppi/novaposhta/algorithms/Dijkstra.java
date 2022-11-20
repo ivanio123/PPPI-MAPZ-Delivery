@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Special class of calculating smaller route in the graph between two vertex, using Dijkstra's algorithm.<br>
+ * @author group2
+ * @version 1.0
+ * */
 public class Dijkstra {
 
     private double[][] graph;
@@ -17,6 +22,12 @@ public class Dijkstra {
 
     private boolean done = false;
 
+    /**
+     * Sets graph object for further work.<br>
+     * Checks data validity.
+     * @param graph adjacency matrix
+     * @param source vertex from which we are about to calculate
+     * */
     public Dijkstra(double[][] graph, int source){
         requireValidMatrix(graph);
         requirePresenceInGraph(graph, source);
@@ -30,7 +41,7 @@ public class Dijkstra {
     }
 
     /**
-     * calculate a minimum distance between source node all other nodes
+     * Calculate a minimum distance between source node all other nodes.
      * @return calculated smallest distance between source and given destination,
      * if no way exists returns Double.POSITIVE_INFINITIVE
      * @throws IllegalArgumentException when destination node doesn't belong to the graph
@@ -43,17 +54,17 @@ public class Dijkstra {
 
             for (int i = 0; i < graph.length; i++) {
                 int v = -1;
-                //пошук вершини до якої зараз веде найлегше ребро
+                //finding the vertex to which the lightest edge now leads
                 for (int j = 0; j < path.length; j++) {
                     if (!used[j] && (v == -1 || path[j] < path[v])) {
                         v = j;
                     }
                 }
-                //релаксація
+                //relaxation
                 for (int j = 0; j < graph[v].length; j++) {
                     double weight = graph[v][j];    //шлях від ребра v до ребра j
 
-                    //якшо є ребро
+                    //if edge is present
                     if (weight != Double.POSITIVE_INFINITY) {
                         weight += path[v];
                         if (weight < path[j]) {
@@ -71,7 +82,7 @@ public class Dijkstra {
     }
 
     /**
-     * build smallerRoute from source node to destination,
+     * Build smallerRoute from source node to destination,
      * if calculateMinDistance hasn't been called, it will be called
      * @return an List with integer ordinary nodes
      * like a shortest route to go between source and destination
@@ -155,5 +166,4 @@ public class Dijkstra {
     private int totalNodes(){
         return graph.length;
     }
-
 }

@@ -11,8 +11,14 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static com.pppi.novaposhta.exception.WrongInputDataKeysConstants.*;
+import static com.pppi.novaposhta.exception.WrongInput.*;
 
+/**
+ * Utils controller class.<br>
+ * Has common useful for controllers static methods.
+ * @author group2
+ * @version 1.0
+ * */
 public class ControllerUtils {
 
     private static final Map<String, Function<FieldError, String>> actionsByCode = new HashMap<>();
@@ -42,9 +48,9 @@ public class ControllerUtils {
             String rejected = (String)fieldError.getRejectedValue();
 
             if (isAnyFractionRecord(rejected) && rejected.contains(",")){
-                return USE_DOT_INSTEAD_OF_COMMA_KEY_ERROR_MESSAGE;
+                return USE_DOT_INSTEAD_OF_COMMA;
             }
-            return INCORRECT_NUMBER_FORMAT_KEY_ERROR_MESSAGE;
+            return INCORRECT_NUMBER_FORMAT;
         };
     }
 
@@ -53,7 +59,7 @@ public class ControllerUtils {
     }
 
     /**
-     * gives an localized error key message
+     * Gives a localized error key message.
      * @param bindingResult caught spring validation errors
      * @param bundle localization tool
      * @return localized error message, if error successfully recognized
@@ -71,8 +77,7 @@ public class ControllerUtils {
     }
 
     private static String getErrorMessageKey(FieldError fieldError) {
-        Function<FieldError, String> action = actionsByCode.getOrDefault(fieldError.getCode(), fieldErr -> UNKNOWN_ERROR_KEY_MESSAGE);
+        Function<FieldError, String> action = actionsByCode.getOrDefault(fieldError.getCode(), fieldErr -> UNKNOWN_ERROR);
         return action.apply(fieldError);
     }
-
 }

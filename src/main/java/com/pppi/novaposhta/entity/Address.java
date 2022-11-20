@@ -5,6 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * Entity class for representing address.
+ * Used as directly user's address or address of delivering.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @NoArgsConstructor
 @Table(name="addresses")

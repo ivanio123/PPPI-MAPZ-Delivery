@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Repository of fetching DeliveryReceipt objects from database.
+ * @author group2
+ * @version 1.0
+ * */
 public interface DeliveryReceiptRepo extends JpaRepository<DeliveryReceipt, Long> {
     Optional<DeliveryReceipt> findByApplicationId(Long id);
 

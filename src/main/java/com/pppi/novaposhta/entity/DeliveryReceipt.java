@@ -6,6 +6,13 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Entity class which represents receipt of delivery.
+ * Used in approving delivery applications with further paying for service.
+ * Implements Receipt interface.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @Table(name = "delivery_receipts")
 @Getter
@@ -20,7 +27,7 @@ public class DeliveryReceipt implements Receipt {
     @JoinColumn(name = "application_id")
     private DeliveryApplication application;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "customer_user_id")
     private User customer;
 

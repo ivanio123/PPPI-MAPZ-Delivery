@@ -13,6 +13,11 @@ import java.util.ResourceBundle;
 import static com.pppi.novaposhta.exception.NotEnoughMoneyException.TRANSACTION_FAILED_NOT_ENOUGH_MONEY_KEY_ERROR_MESSAGE_FORMAT;
 import static com.pppi.novaposhta.exception.PayingException.CURRENCY_UAH_KEY;
 
+/**
+ * Takes requests associated with error page.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 public class ErrorController {
 

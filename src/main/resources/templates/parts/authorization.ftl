@@ -83,12 +83,20 @@
                 <div class="form-group row">
                     <div class="d-flex justify-content-center">
                         <div class="col-4 me-4">
-                            <input class="form-control mt-2" type="text" name="name" id="nameInput" value="${name!""}" placeholder="<@spring.message "lang.name"/>">
-                            <input class="form-control mt-2" type="text" name="surname" id="surnameInput" value="${surname!""}" placeholder="<@spring.message "lang.surname"/>">
+                            <div class="validation-container" <#if nameErrorMessage??>data-error="${nameErrorMessage}" </#if>>
+                                <input class="form-control mt-2" type="text" name="name" id="nameInput" value="${name!""}" placeholder="<@spring.message "lang.name"/>">
+                            </div>
+                            <div class="validation-container" <#if surnameErrorMessage??>data-error="${surnameErrorMessage}"</#if>>
+                                <input class="form-control mt-2" type="text" name="surname" id="surnameInput" value="${surname!""}" placeholder="<@spring.message "lang.surname"/>">
+                            </div>
                         </div>
-                        <div class="col-4">
-                            <input class="form-control mt-2" type="email" name="email" id="emailInput" value="${email!""}" placeholder="<@spring.message "auth.email.placeholder"/>">
-                            <input class="form-control mt-2" type="text" maxlength="13" name="phone" value="${phone!""}" id="phoneInput" placeholder="<@spring.message "lang.phone"/>">
+                        <div class="col-4 validation-container">
+                            <div class="validation-container">
+                                <input class="form-control mt-2" type="email" name="email" id="emailInput" value="${email!""}" placeholder="<@spring.message "auth.email.placeholder"/>">
+                            </div>
+                            <div class="validation-container" <#if phoneErrorMessage??>data-error="${phoneErrorMessage}" </#if>>
+                                <input class="form-control mt-2" type="text" maxlength="13" name="phone" value="${phone!""}" id="phoneInput" placeholder="<@spring.message "lang.phone"/>">
+                            </div>
                         </div>
                     </div>
                 </div>

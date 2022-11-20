@@ -25,6 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.*;
 
+/**
+ * Takes requests associated with page of handling delivery receipt.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 public class DeliveryReceiptController {
 

@@ -1,6 +1,6 @@
 package com.pppi.novaposhta.dto;
 
-import com.pppi.novaposhta.exception.WrongInputDataKeysConstants;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,28 +11,35 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import static com.pppi.novaposhta.exception.WrongInput.REQUIRED;
+
+/**
+ * Data Transfer Object to assemble updated data of DeliveryApplication.<br>
+ * @author group2
+ * @version 1.0
+ * */
 @Getter
 @Setter
 public class UpdateDeliveryApplicationRequest {
 
     @Valid
-    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @NotNull(message = REQUIRED)
     private AddressRequest senderAddress;
 
     @Valid
-    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @NotNull(message = REQUIRED)
     private AddressRequest receiverAddress;
 
     @Valid
-    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @NotNull(message = REQUIRED)
     private DeliveredBaggageRequest deliveredBaggageRequest;
 
-    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @NotNull(message = REQUIRED)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private LocalDate sendingDate;
 
-    @NotNull(message = WrongInputDataKeysConstants.REQUIRED_KEY_ERROR_MESSAGE)
+    @NotNull(message = REQUIRED)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private LocalDate receivingDate;

@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Service class for managing DeliveredBaggage objects.<br>
+ * @author group2
+ * @see DeliveredBaggage
+ * @version 1.0
+ * */
 @Service
 public class DeliveredBaggageService {
 

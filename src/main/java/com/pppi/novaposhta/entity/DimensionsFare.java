@@ -6,6 +6,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Entity class of dimensions fare.
+ * Used in calculating price of delivery cost.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @Table(name = "dimensions_fares")
 @Getter

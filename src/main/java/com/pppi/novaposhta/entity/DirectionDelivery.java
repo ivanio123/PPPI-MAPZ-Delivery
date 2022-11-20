@@ -8,6 +8,12 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * Entity class. Represents directions of delivery.
+ * Used in finding delivery route.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @Table(name="directions")
 @Getter

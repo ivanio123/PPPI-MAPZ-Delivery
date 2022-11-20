@@ -7,7 +7,7 @@ import com.pppi.novaposhta.entity.City;
 import com.pppi.novaposhta.entity.DeliveredBaggage;
 import com.pppi.novaposhta.exception.NoExistingCityException;
 import com.pppi.novaposhta.exception.NoExistingDirectionException;
-import com.pppi.novaposhta.exception.SameCityDirectionException;
+import com.pppi.novaposhta.exception.WrongDataAttributeException;
 import com.pppi.novaposhta.exception.WrongDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +17,19 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import static com.pppi.novaposhta.exception.ModelErrorAttribute.CITY_DIRECTION;
+import static com.pppi.novaposhta.exception.WrongInput.INVALID_DIRECTION_SAME_CITIES;
+
+/**
+ * Service class for calculating cost of delivery.<br>
+ * @author group2
+ * @see DistanceFareService
+ * @see WeightFareService
+ * @see DimensionsFareService
+ * @see DirectionDeliveryService
+ * @see CityService
+ * @version 1.0
+ * */
 @Service
 public class DeliveryCostCalculatorService {
     @Autowired
@@ -92,10 +105,10 @@ public class DeliveryCostCalculatorService {
         }
         return 0.0;
     }
-    
-    private void requireDifferentCities(Long cityFromId, Long cityToId, ResourceBundle bundle) throws SameCityDirectionException {
+
+    private void requireDifferentCities(Long cityFromId, Long cityToId, ResourceBundle bundle) throws WrongDataException {
         if (Objects.equals(cityFromId, cityToId)){
-            throw new SameCityDirectionException(bundle);
+            throw new WrongDataAttributeException(CITY_DIRECTION.getAttr(), bundle, INVALID_DIRECTION_SAME_CITIES);
         }
     }
 

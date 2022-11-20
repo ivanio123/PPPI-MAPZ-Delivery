@@ -4,6 +4,11 @@ import com.pppi.novaposhta.entity.City;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Data Transfer Object to transfer response of cost calculation.<br>
+ * @author group2
+ * @version 1.0
+ * */
 @Getter
 @Setter
 public class DeliveryCostCalculatorResponse {

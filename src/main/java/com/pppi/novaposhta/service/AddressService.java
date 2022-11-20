@@ -12,6 +12,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Service class for managing Address objects.<br>
+ * @author group2
+ * @see Address
+ * @version 1.0
+ * */
 @Service
 public class AddressService {
 
@@ -36,15 +42,15 @@ public class AddressService {
             return false;
         }
 
-
-        if(Objects.isNull(address.getCity()) || Objects.isNull(cityService.findCityById(address.getCity().getId()))){
-            throw new NoExistingCityException(Optional.ofNullable(address.getCity()).orElse(new City()), ResourceBundle.getBundle(messages));
+        City city = address.getCity();
+        if(Objects.isNull(city) || Objects.isNull(city.getId()) || Objects.isNull(cityService.findCityById(city.getId()))){
+            throw new NoExistingCityException(Optional.ofNullable(city).orElse(new City()), ResourceBundle.getBundle(messages));
         }
 
         Address foundAddress;
-        if (!Objects.isNull(foundAddress = addressRepo.findByHouseNumberAndCityAndStreet(address.getHouseNumber(), address.getCity(), address.getStreet()))){
-             address.setId(foundAddress.getId());
-             return false;
+        if (!Objects.isNull(foundAddress = addressRepo.findByHouseNumberAndCityAndStreet(address.getHouseNumber(), city, address.getStreet()))){
+            address.setId(foundAddress.getId());
+            return false;
         }
         addressRepo.save(address);
         return true;

@@ -9,10 +9,15 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * Utils class with common logic for working with cities.<br>
+ * @author group2
+ * @version 1.0
+ * */
 public class CityUtils {
 
     /**
-     * calculate smallest distance between cityFrom and cityTo
+     * Calculate smallest distance between cityFrom and cityTo.
      * @param cityFrom localized source city
      * @param cityTo localized destination city
      * @param directions list of all available directions between cities
@@ -40,7 +45,7 @@ public class CityUtils {
     }
 
     /**
-     * calculate smallest distance between cityFrom and cityTo
+     * Calculate smallest distance between cityFrom and cityTo.
      * @param cityFrom localized source city
      * @param cityTo localized destination city
      * @param directions list of all available directions between cities

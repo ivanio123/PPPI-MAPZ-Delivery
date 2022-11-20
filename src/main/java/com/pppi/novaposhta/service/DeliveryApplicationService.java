@@ -3,13 +3,15 @@ package com.pppi.novaposhta.service;
 import com.pppi.novaposhta.dto.DeliveryApplicationRequest;
 import com.pppi.novaposhta.dto.DeliveryApplicationsReviewFilterRequest;
 import com.pppi.novaposhta.dto.UpdateDeliveryApplicationRequest;
-import com.epam.cargo.entity.*;
 import com.pppi.novaposhta.entity.*;
 import com.pppi.novaposhta.exception.NoExistingCityException;
 import com.pppi.novaposhta.exception.NoExistingDirectionException;
 import com.pppi.novaposhta.exception.WrongDataException;
 import com.pppi.novaposhta.repos.DeliveryApplicationRepo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,8 +22,16 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing DeliveryApplication objects.<br>
+ * @author group2
+ * @see DeliveryApplication
+ * @version 1.0
+ * */
 @Service
 public class DeliveryApplicationService {
+
+    private static final Logger logger = Logger.getLogger(DeliveryApplicationService.class);
 
     @Autowired
     private DeliveryApplicationRepo deliveryApplicationRepo;
@@ -44,24 +54,29 @@ public class DeliveryApplicationService {
     @Autowired
     private DeliveryReceiptService receiptService;
 
+    @Value("${spring.messages.basename}")
+    private String messages;
+
     /**
      * Make and send delivery application to the database. Calculate price before saving
      * @param customer initiator of sending application
      * @param request data to make DeliveryApplication object
-     * @param bundle ResourceBundle to localize errorMessages for possible errors
      * @return returned value of saveApplication method
      * */
-    public boolean sendApplication(User customer, DeliveryApplicationRequest request, ResourceBundle bundle) throws WrongDataException {
+    public boolean sendApplication(User customer, DeliveryApplicationRequest request) throws WrongDataException {
         Objects.requireNonNull(customer, "Customer object cannot be null");
         Objects.requireNonNull(request, "DeliveryApplicationRequest object cannot be null");
 
+        ResourceBundle bundle = ResourceBundle.getBundle(messages, LocaleContextHolder.getLocale());
+
         DeliveryApplication application = ServiceUtils.createDeliveryApplication(customer, request, cityService, bundle);
         application.setPrice(calculatePrice(application));
+
         return saveApplication(application);
 
     }
 
-    private Double calculatePrice(DeliveryApplication application) throws NoExistingDirectionException {
+    public Double calculatePrice(DeliveryApplication application) throws NoExistingDirectionException {
         Double distanceCost = costCalculatorService.calculateDistanceCost(application.getSenderAddress(), application.getReceiverAddress());
         DeliveredBaggage deliveredBaggage = application.getDeliveredBaggage();
         Double weightCost = costCalculatorService.calculateWeightCost(deliveredBaggage.getWeight());
@@ -81,11 +96,14 @@ public class DeliveryApplicationService {
         }
         ServiceUtils.requireExistingUser(application.getCustomer(), userService);
 
+        Optional.ofNullable(application.getSendingDate()).orElseThrow(IllegalArgumentException::new);
+        Optional.ofNullable(application.getReceivingDate()).orElseThrow(IllegalArgumentException::new);
+
         deliveredBaggageService.save(requireNotNullDeliveredBaggage(application.getDeliveredBaggage()));
         addressService.addAddress(requireNotNullAddress(application.getSenderAddress()));
         addressService.addAddress(requireNotNullAddress(application.getReceiverAddress()));
         deliveryApplicationRepo.save(application);
-
+        logger.info(String.format("Delivery application: %s has been successfully made", applicationLogInfo(application)));
         return true;
     }
 
@@ -102,9 +120,9 @@ public class DeliveryApplicationService {
      * @param id unique identifier of application in the database
      * @return found DeliveryApplication object, if no objects are found returns null
      * */
-   public DeliveryApplication findById(Long id){
+    public DeliveryApplication findById(Long id){
         return deliveryApplicationRepo.findById(id).orElse(null);
-   }
+    }
 
     public List<DeliveryApplication> findAll() {
         return deliveryApplicationRepo.findAll();
@@ -165,18 +183,19 @@ public class DeliveryApplicationService {
     }
 
     public void rejectApplication(DeliveryApplication application) {
-       Objects.requireNonNull(application, "Application cannot be null");
-       Optional<DeliveryReceipt> receiptOptional = receiptService.findByApplicationId(application.getId());
-       receiptOptional.ifPresent(r ->{
-           if (r.getPaid()){
-               throw new IllegalStateException("Cannot reject already paid application");
-           }
-           else{
-               receiptService.deleteById(r.getId());
-           }
-       });
-       application.setState(DeliveryApplication.State.REJECTED);
-       deliveryApplicationRepo.save(application);
+        Objects.requireNonNull(application, "Application cannot be null");
+        Optional<DeliveryReceipt> receiptOptional = receiptService.findByApplicationId(application.getId());
+        receiptOptional.ifPresent(r ->{
+            if (r.getPaid()){
+                throw new IllegalStateException("Cannot reject already paid application");
+            }
+            else{
+                receiptService.deleteById(r.getId());
+            }
+        });
+        application.setState(DeliveryApplication.State.REJECTED);
+        deliveryApplicationRepo.save(application);
+        logger.info( String.format("Reject application: %s", applicationLogInfo(application)));
     }
 
     public DeliveryApplication edit(DeliveryApplication application, UpdateDeliveryApplicationRequest updated) throws NoExistingCityException, NoExistingDirectionException {
@@ -257,4 +276,16 @@ public class DeliveryApplicationService {
             return cmp;
         }
     }
+
+    /**
+     * Make String for logger consists with applications info
+     * @param application
+     * @return String in format [id=(id), user=(userFullName), price=(price)]
+     * */
+    private static String applicationLogInfo(DeliveryApplication application){
+        User customer = application.getCustomer();
+        String customerFullName = String.format("%s %s", customer.getName(), customer.getSurname());
+        return String.format("[id=%1$d, user=%2$s, price=%3$f]", application.getId(), customerFullName, application.getPrice());
+    }
+
 }

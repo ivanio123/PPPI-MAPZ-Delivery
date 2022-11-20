@@ -1,7 +1,15 @@
 package com.pppi.novaposhta.exception;
 
+/**
+ * Exception class in a case paying fails.
+ * @author group2
+ * @version  1.0
+ * */
 public class PayingException extends Exception{
 
+    /**
+     * Key of currency in ResourceBundle.
+     * */
     public static final String CURRENCY_UAH_KEY = "lang.UAH";
 
     public PayingException(String message) {
@@ -9,6 +17,6 @@ public class PayingException extends Exception{
     }
 
     public String getAttribute(){
-        return "payingErrorMessage";
+        return ModelErrorAttribute.PAYING.getAttr();
     }
 }

@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Locale;
 
+/**
+ * Takes requests associated with page of handling delivery applications review.
+ * @author group2
+ * @version 1.0
+ * */
 @Controller
 @PreAuthorize("hasAuthority('MANAGER')")
 @RequestMapping("/applications/review")

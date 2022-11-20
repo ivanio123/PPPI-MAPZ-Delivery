@@ -5,6 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Entity class which represents delivery application.
+ * Used for providing user form of making delivery requests.
+ * @author group2
+ * @version 1.0
+ * */
 @Entity
 @NoArgsConstructor
 @Table(name = "delivery_applications")

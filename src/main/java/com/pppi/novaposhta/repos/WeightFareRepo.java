@@ -4,6 +4,11 @@ import com.pppi.novaposhta.entity.WeightFare;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+/**
+ * Repository of fetching WeightFare objects from database.
+ * @author group2
+ * @version 1.0
+ * */
 public interface WeightFareRepo extends JpaRepository<WeightFare, Long> {
     @Query(value = "SELECT f FROM WeightFare f WHERE ?1 BETWEEN f.weightFrom AND f.weightTo")
     WeightFare findFareByWeight(Integer weight);
