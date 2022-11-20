@@ -1,15 +1,17 @@
 package com.pppi.novaposhta.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "delivery_applications")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class DeliveryApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,4 +51,5 @@ public class DeliveryApplication {
     public enum State{
         SUBMITTED, CONFIRMED, COMPLETED, CANCELED, REJECTED
     }
+
 }

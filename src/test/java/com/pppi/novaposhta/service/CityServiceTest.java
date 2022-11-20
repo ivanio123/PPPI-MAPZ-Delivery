@@ -1,11 +1,15 @@
 package com.pppi.novaposhta.service;
 
 import com.pppi.novaposhta.entity.City;
-import org.junit.Assert;
+import com.pppi.novaposhta.mock.CityMockEnvironment;
+import com.pppi.novaposhta.repos.CityRepo;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Objects;
@@ -17,30 +21,43 @@ class CityServiceTest {
     @Autowired
     private CityService cityService;
 
+    @MockBean
+    private CityRepo cityRepo;
+
+    @BeforeEach
+    public void setUp(){
+        CityMockEnvironment cityMockEnvironment = new CityMockEnvironment();
+        cityMockEnvironment.mockCityRepoBean(cityRepo);
+    }
+
     @Test
     void addCity() {
-        City city = new City("Vinytsia", "21012");
+        City city = getTestCity();
         cityService.addCity(city);
         boolean isPresent = !Objects.isNull(cityService.findCityByZipCode(city.getZipcode()));
-        Assert.assertTrue(isPresent);
+        Assertions.assertTrue(isPresent);
     }
 
     @Test
     void addCityFailed(){
-        City city = new City("Vinytsia", "21012");
+        City city = getTestCity();
         cityService.addCity(city);
         boolean isAdded = cityService.addCity(city);
-        Assert.assertFalse(isAdded);
+        Assertions.assertFalse(isAdded);
     }
     @Test
     void findCityById(){
-        String zipcode = "20301";
-        City city1 = new City("Uman", zipcode);
+
+        City city1 = getTestCity();
         cityService.addCity(city1);
 
-        City city2 = cityService.findCityByZipCode(zipcode);
+        City city2 = cityService.findCityByZipCode(city1.getZipcode());
 
-        Assert.assertEquals(city1.getName(), city2.getName());
+        Assertions.assertEquals(city1.getName(), city2.getName());
+    }
+
+    private City getTestCity() {
+        return new City("TestCity", "12345");
     }
 
 }

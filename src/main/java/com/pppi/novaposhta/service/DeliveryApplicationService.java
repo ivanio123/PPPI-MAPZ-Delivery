@@ -44,6 +44,13 @@ public class DeliveryApplicationService {
     @Autowired
     private DeliveryReceiptService receiptService;
 
+    /**
+     * Make and send delivery application to the database. Calculate price before saving
+     * @param customer initiator of sending application
+     * @param request data to make DeliveryApplication object
+     * @param bundle ResourceBundle to localize errorMessages for possible errors
+     * @return returned value of saveApplication method
+     * */
     public boolean sendApplication(User customer, DeliveryApplicationRequest request, ResourceBundle bundle) throws WrongDataException {
         Objects.requireNonNull(customer, "Customer object cannot be null");
         Objects.requireNonNull(request, "DeliveryApplicationRequest object cannot be null");
@@ -61,23 +68,37 @@ public class DeliveryApplicationService {
         Double dimensionsCost = costCalculatorService.calculateDimensionsCost(deliveredBaggage.getVolume());
         return distanceCost + weightCost + dimensionsCost;
     }
-
+    /**
+     * Save application to the database. Doesn't automatically calculate price, takes already assigned one
+     * @param application deliveryApplication to save
+     * @throws NoExistingCityException any from specified addresses contains missing in the database city
+     * @throws IllegalArgumentException if user doesn't exist in the database
+     * @return true if application was saved successfully, false if parameter application is null
+     * */
     public boolean saveApplication(DeliveryApplication application) throws NoExistingCityException {
         if (Objects.isNull(application)){
             return false;
         }
         ServiceUtils.requireExistingUser(application.getCustomer(), userService);
 
-        deliveredBaggageService.addBaggage(application.getDeliveredBaggage());
-        addressService.addAddress(application.getSenderAddress());
-        addressService.addAddress(application.getReceiverAddress());
+        deliveredBaggageService.save(requireNotNullDeliveredBaggage(application.getDeliveredBaggage()));
+        addressService.addAddress(requireNotNullAddress(application.getSenderAddress()));
+        addressService.addAddress(requireNotNullAddress(application.getReceiverAddress()));
         deliveryApplicationRepo.save(application);
 
         return true;
     }
 
+    private DeliveredBaggage requireNotNullDeliveredBaggage(DeliveredBaggage baggage) {
+        return Optional.ofNullable(baggage).orElseThrow(IllegalArgumentException::new);
+    }
+
+    private Address requireNotNullAddress(Address application) {
+        return Optional.ofNullable(application).orElseThrow(()->new IllegalArgumentException("Address in application cannot be null!"));
+    }
+
     /**
-     * finds application according to the given id
+     * Finds application according to the given id
      * @param id unique identifier of application in the database
      * @return found DeliveryApplication object, if no objects are found returns null
      * */

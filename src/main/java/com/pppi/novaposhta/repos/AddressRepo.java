@@ -12,7 +12,7 @@ public interface AddressRepo extends JpaRepository<Address, Long> {
     Optional<Address> findById(Long id);
 
     @Override
-    List<Address> findAll();               //untested
+    List<Address> findAll();
 
     Address findByHouseNumberAndCityAndStreet(String houseNumber, City city, String street);
 }

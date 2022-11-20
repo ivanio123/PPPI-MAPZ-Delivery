@@ -2,7 +2,7 @@ package com.pppi.novaposhta.service;
 
 public interface CityZipcodesConstants {
     String UMAN_ZIPCODE = "20301";
-    String VINNYTISA_ZIPCODE = "21012";
+    String VINNYTSIA_ZIPCODE = "21012";
     String ODESSA_ZIPCODE = "65125";
     String KHMELNYTSKIY_ZIPCODE = "29000-29027";
     String ZHYTOMYR_ZIPCODE = "10000-10031";

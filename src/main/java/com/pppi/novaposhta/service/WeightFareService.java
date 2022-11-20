@@ -37,10 +37,11 @@ public class WeightFareService {
         double price = 0.0;
         WeightFare fare = findFareByWeight(weight);
 
-        while(weight != 0 && weight >= fare.getWeightFrom()){
+        do {
             price += fare.getPrice();
             weight -= fare.getWeightTo();
-        }
+        } while(weight != 0 && weight >= fare.getWeightFrom());
+
         return price;
     }
 

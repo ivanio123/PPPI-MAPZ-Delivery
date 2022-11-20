@@ -13,5 +13,5 @@ public interface CityRepo extends JpaRepository<City, Long> {
     Optional<City> findByZipcode(String zipcode);
 
     @Override
-    List<City> findAll();               //untested
+    List<City> findAll();
 }

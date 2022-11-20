@@ -59,7 +59,7 @@ public class RegistrationController {
     ) {
         if (!bindingResult.hasErrors()) {
             try {
-                userService.registerUser(userRequest, locale);
+                userService.registerUser(userRequest);
             } catch (WrongDataException e) {
                 redirectAttributes.addFlashAttribute("userRequest", userRequest);
                 redirectAttributes.addFlashAttribute(e.getModelAttribute(), e.getMessage());

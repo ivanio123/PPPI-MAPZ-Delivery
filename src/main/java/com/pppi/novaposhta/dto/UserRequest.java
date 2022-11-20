@@ -1,6 +1,7 @@
 package com.pppi.novaposhta.dto;
 
 import com.pppi.novaposhta.exception.WrongInputDataKeysConstants;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@Builder
 public class UserRequest {
     private String name;
     private String surname;
@@ -30,4 +32,17 @@ public class UserRequest {
 
     private AddressRequest address;
 
+    public UserRequest() {
+    }
+
+    public UserRequest(String name, String surname, String login, String password, String duplicatePassword, String phone, String email, AddressRequest address) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.duplicatePassword = duplicatePassword;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+    }
 }

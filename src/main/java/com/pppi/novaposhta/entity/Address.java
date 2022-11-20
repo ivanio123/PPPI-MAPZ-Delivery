@@ -1,21 +1,21 @@
 package com.pppi.novaposhta.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@NoArgsConstructor
 @Table(name="addresses")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    public Address() { }
 
     public Address(City city, String street, String houseNumber) {
         this.city = city;
