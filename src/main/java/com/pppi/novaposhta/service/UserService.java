@@ -217,7 +217,7 @@ public class UserService implements UserDetailsService {
     private void initializePersonalData(UserRequest userRequest, User user) throws WrongDataException{
         user.setName(requireValidName(userRequest));
         user.setSurname(requireValidSurname(userRequest));
-        user.setEmail(user.getEmail());
+        user.setEmail(userRequest.getEmail());
         user.setPhone(requireValidPhone(userRequest));
 
         assignAddressToUser(userRequest, user);

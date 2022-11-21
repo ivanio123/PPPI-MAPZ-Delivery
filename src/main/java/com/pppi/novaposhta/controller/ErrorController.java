@@ -21,6 +21,8 @@ import static com.pppi.novaposhta.exception.PayingException.CURRENCY_UAH_KEY;
 @Controller
 public class ErrorController {
 
+    protected static final String ERROR_MESSAGE = "errorMessage";
+
     @Value("${spring.messages.basename}")
     private String messages;
 
@@ -28,6 +30,17 @@ public class ErrorController {
     public String forbidden(Model model){
         model.addAttribute("url", "/forbidden");
         return "forbidden";
+    }
+
+    @GetMapping("/error_page")
+    public String errorPage(
+            @RequestParam(name = ERROR_MESSAGE, required = false) String message,
+            Model model
+    ){
+        if (Objects.nonNull(message)){
+            model.addAttribute(ERROR_MESSAGE, message);
+        }
+        return "errorPage";
     }
 
     @GetMapping("/paying/failed")

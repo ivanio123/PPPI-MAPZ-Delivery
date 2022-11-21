@@ -1,11 +1,14 @@
 package com.pppi.novaposhta.service;
 
+import com.pppi.novaposhta.custom.IProfitBaggagePerType;
 import com.pppi.novaposhta.dto.DeliveredBaggageRequest;
+import com.pppi.novaposhta.entity.BaggageType;
 import com.pppi.novaposhta.entity.DeliveredBaggage;
 import com.pppi.novaposhta.repos.DeliveredBaggageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,8 +21,11 @@ import java.util.Optional;
 @Service
 public class DeliveredBaggageService {
 
-    @Autowired
-    private DeliveredBaggageRepo deliveredBaggageRepo;
+    private final DeliveredBaggageRepo deliveredBaggageRepo;
+
+    public DeliveredBaggageService(DeliveredBaggageRepo deliveredBaggageRepo) {
+        this.deliveredBaggageRepo = deliveredBaggageRepo;
+    }
 
     public Optional<DeliveredBaggage> findById(Long id){
         return deliveredBaggageRepo.findById(id);
@@ -62,4 +68,13 @@ public class DeliveredBaggageService {
         updated.setId(deliveredBaggage.getId());
         return deliveredBaggageRepo.save(updated);
     }
+
+    /**
+     * Gives report of profit {@link DeliveredBaggage} per each {@link BaggageType}.
+     * @return {@link List} of {@link IProfitBaggagePerType} objects
+     * */
+    public List<IProfitBaggagePerType> profitBaggageReport(){
+        return deliveredBaggageRepo.profitBaggagePerType();
+    }
+
 }
