@@ -39,3 +39,12 @@ body{
     font-size: 0.85em;
     color: #000;
 }
+
+.content {
+    min-height: calc(100vh - 30px);
+}
+
+.footer {
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.05);
+}
