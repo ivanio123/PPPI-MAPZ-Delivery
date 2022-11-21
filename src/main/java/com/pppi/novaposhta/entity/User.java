@@ -58,7 +58,7 @@ public class User implements UserDetails {
     @Column(name="cash")
     private BigDecimal cash;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="addressId")
     private Address address;
 

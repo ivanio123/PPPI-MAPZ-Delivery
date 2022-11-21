@@ -44,10 +44,10 @@ public class DeliveryApplicationController {
     private DeliveryApplicationService applicationService;
 
     @Autowired
-    public CityService cityService;
+    private CityService cityService;
 
     @Autowired
-    public UserService userService;
+    private UserService userService;
 
     @Value("${spring.messages.basename}")
     private String messages;

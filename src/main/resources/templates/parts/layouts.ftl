@@ -2,53 +2,53 @@
 
 <#macro application app>
 
-<#if app.deliveredBaggage??>
-    <#assign
+    <#if app.deliveredBaggage??>
+        <#assign
         baggage = app.deliveredBaggage
         type = baggage.type!""
         volume = baggage.volume!""
         weight = baggage.weight!""
         description = baggage.description!""
-    >
-</#if>
+        >
+    </#if>
 
-<#if app.senderAddress??>
-    <#assign
+    <#if app.senderAddress??>
+        <#assign
         senderAddress = app.senderAddress
         senderStreet = senderAddress.street!""
         senderHouseNumber = senderAddress.houseNumber!""
-    >
-    <#if app.senderAddress.city??>
-        <#assign
-            senderCityName = app.senderAddress.city.name!""
         >
+        <#if app.senderAddress.city??>
+            <#assign
+            senderCityName = app.senderAddress.city.name!""
+            >
+        </#if>
     </#if>
-</#if>
 
-<#if app.receiverAddress??>
-    <#assign
+    <#if app.receiverAddress??>
+        <#assign
         receiverAddress = app.receiverAddress
         receiverStreet = receiverAddress.street!""
         receiverHouseNumber = receiverAddress.houseNumber!""
-    >
-    <#if app.receiverAddress.city??>
-        <#assign
+        >
+        <#if app.receiverAddress.city??>
+            <#assign
             receiverCityName = app.receiverAddress.city.name!""
+            >
+        </#if>
+    </#if>
+
+    <#if app.sendingDate??>
+        <#assign
+        sendingDate = app.sendingDate!""
         >
     </#if>
-</#if>
 
-<#if app.sendingDate??>
-    <#assign
-        sendingDate = app.sendingDate!""
-    >
-</#if>
-
-<#if app.receivingDate??>
-    <#assign
+    <#if app.receivingDate??>
+        <#assign
         receivingDate = app.receivingDate!""
-    >
-</#if>
+        >
+    </#if>
 
     <div class="row">
         <h1 class="d-flex justify-content-center"><@spring.message "delivery-application.page.head"/> #${app.id!""}</h1>
@@ -57,7 +57,7 @@
     <#if app.state == "SUBMITTED">
         <div class="row">
             <div class="col d-flex justify-content-end">
-                <a href="/application/${app.id}/update" class="btn btn-primary" href="#"><@spring.message "lang.edit"/></a>
+                <a href="/application/${app.id}/update" class="btn btn-primary"><@spring.message "lang.edit"/></a>
             </div>
         </div>
     </#if>
@@ -145,77 +145,77 @@
 </#macro>
 
 <#macro deliveryReceipt receipt>
-<#include "references.ftl">
+    <#include "references.ftl">
 
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "delivery.application"/>:</label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "delivery.application"/>:</label>
+        </div>
+        <div class="col">
+            <label><a href="${refApplication}/${receipt.application.id}">#${receipt.application.id}</a></label>
+        </div>
     </div>
-    <div class="col">
-        <label><a href="${refApplication}/${receipt.application.id}">#${receipt.application.id}</a></label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "lang.customer"/>:</label>
+        </div>
+        <div class="col">
+            <label>${receipt.customer.name} ${receipt.customer.surname}</label>
+        </div>
     </div>
-</div>
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "lang.customer"/>:</label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "lang.manager"/>:</label>
+        </div>
+        <div class="col">
+            <label>${receipt.manager.name} ${receipt.manager.surname}</label>
+        </div>
     </div>
-    <div class="col">
-        <label>${receipt.customer.name} ${receipt.customer.surname}</label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "delivery.application.receipt.formation-date"/>:</label>
+        </div>
+        <div class="col">
+            <label>${receipt.formationDate}</label>
+        </div>
     </div>
-</div>
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "lang.manager"/>:</label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "lang.price"/>:</label>
+        </div>
+        <div class="col">
+            <label>${receipt.totalPrice} <@spring.message "lang.UAH"/></label>
+        </div>
     </div>
-    <div class="col">
-        <label>${receipt.manager.name} ${receipt.manager.surname}</label>
+    <div class="row mb-2">
+        <div class="col">
+            <label class="fw-bolder"><@spring.message "delivery.application.receipt.payment"/>:</label>
+        </div>
+        <div class="col">
+            <label><#if receipt.paid><@spring.message "lang.paid"/> <#else> <@spring.message "lang.unpaid"/></#if></label>
+        </div>
     </div>
-</div>
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "delivery.application.receipt.formation-date"/>:</label>
-    </div>
-    <div class="col">
-        <label>${receipt.formationDate}</label>
-    </div>
-</div>
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "lang.price"/>:</label>
-    </div>
-    <div class="col">
-        <label>${receipt.totalPrice} <@spring.message "lang.UAH"/></label>
-    </div>
-</div>
-<div class="row mb-2">
-    <div class="col">
-        <label class="fw-bolder"><@spring.message "delivery.application.receipt.payment"/>:</label>
-    </div>
-    <div class="col">
-        <label><#if receipt.paid><@spring.message "lang.paid"/> <#else> <@spring.message "lang.unpaid"/></#if></label>
-    </div>
-</div>
 
 
 </#macro>
 
 <#macro customerInfo customer>
     <#assign
-        login = customer.login!""
-        id = customer.id!""
-        phone = customer.phone!""
+    login = customer.login!""
+    id = customer.id!""
+    phone = customer.phone!""
     >
     <#if customer.name?? && customer.surname??>
         <#assign
-            firstNameLastName = customer.name + " " + customer.surname
+        firstNameLastName = customer.name + " " + customer.surname
         >
     </#if>
     <#if customer.address??>
         <#assign
-            customerAddress = customer.address
-            cityName = customerAddress.city.name
-            street = customerAddress.street!""
-            houseNumber = customerAddress.houseNumber!""
+        customerAddress = customer.address
+        cityName = customerAddress.city.name
+        street = customerAddress.street!""
+        houseNumber = customerAddress.houseNumber!""
         >
     </#if>
     <div class="ms-4 me-4">
